@@ -33,7 +33,7 @@
 # The following command reverts it.
 # % git update-index --no-assume-unchanged config.bzl
 
-BRANDING = "Mozc"
+BRANDING = "GoogleJapaneseInput"
 
 BAZEL_TOOLS_PREFIX = "@bazel_tools"
 
