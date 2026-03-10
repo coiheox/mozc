@@ -180,6 +180,9 @@ cc_library(
         oss_macos = [
             "MOZC_BUILD",
         ],
+        prod_macos = [
+            "GOOGLE_JAPANESE_INPUT_BUILD",
+        ],
         oss_windows = [
             "MOZC_BUILD",
             "WINVER=0x0A00",

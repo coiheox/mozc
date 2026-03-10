@@ -45,95 +45,13 @@ jobs:
       - name: bazel build
         working-directory: ./src
         run: |
-          bazelisk build --config oss_macos package --macos_cpus=arm64 --config release_build
+          bazelisk build //unix/emacs:mozc_emacs_helper --config prod_macos -c opt --macos_cpus=arm64
 
       - name: upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Mozc_arm64.pkg
-          path: src/bazel-bin/mac/Mozc.pkg
-          if-no-files-found: warn
-
-  build_intel64:
-    # https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md
-    runs-on: macos-15
-    timeout-minutes: 60
-
-    steps:
-      - name: checkout
-        uses: actions/checkout@v5
-        with:
-          submodules: recursive
-
-      - name: Try to restore update_deps cache
-        uses: actions/cache@v4
-        with:
-          path: src/third_party_cache
-          key: update_deps-${{ runner.os }}-${{ hashFiles('src/build_tools/update_deps.py') }}
-
-      - name: Install dependencies
-        working-directory: ./src
-        # This command uses src/third_party_cache as the download cache.
-        run: |
-          python3 build_tools/update_deps.py
-
-      - name: Build Qt
-        working-directory: ./src
-        run: |
-          python3 build_tools/build_qt.py --release --confirm_license --macos_cpus=x86_64
-          echo "MOZC_QT_PATH=${PWD}/third_party/qt" >> $GITHUB_ENV
-
-      - name: bazel build
-        working-directory: ./src
-        run: |
-          bazelisk build --config oss_macos package --macos_cpus=x86_64 --config release_build
-
-      - name: upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Mozc_intel64.pkg
-          path: src/bazel-bin/mac/Mozc.pkg
-          if-no-files-found: warn
-
-  build_universal_binary:
-    # https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md
-    runs-on: macos-15
-    timeout-minutes: 90
-
-    steps:
-      - name: checkout
-        uses: actions/checkout@v5
-        with:
-          submodules: recursive
-
-      - name: Try to restore update_deps cache
-        uses: actions/cache@v4
-        with:
-          path: src/third_party_cache
-          key: update_deps-${{ runner.os }}-${{ hashFiles('src/build_tools/update_deps.py') }}
-
-      - name: Install dependencies
-        working-directory: ./src
-        # This command uses src/third_party_cache as the download cache.
-        run: |
-          python3 build_tools/update_deps.py
-
-      - name: Build Qt
-        working-directory: ./src
-        run: |
-          python3 build_tools/build_qt.py --release --confirm_license --macos_cpus=x86_64,arm64
-          echo "MOZC_QT_PATH=${PWD}/third_party/qt" >> $GITHUB_ENV
-
-      - name: bazel build
-        working-directory: ./src
-        run: |
-          bazelisk build --config oss_macos package --macos_cpus=x86_64,arm64 --config release_build
-
-      - name: upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Mozc_universal_binary.pkg
-          path: src/bazel-bin/mac/Mozc.pkg
+          name: mozc_emacs_helper
+          path: src/bazel-bin/unix/emacs/mozc_emacs_helper
           if-no-files-found: warn
 
   test:
