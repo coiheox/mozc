@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build_arm64:
+  build_mozc_emacs_helper:
     # https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md
     runs-on: macos-15
     timeout-minutes: 60
